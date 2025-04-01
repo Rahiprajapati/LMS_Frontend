@@ -6,7 +6,7 @@ const Authprovider = ({children}) => {                   //main function
 
     const register=async( name, email, password)=>{                  //function
         try{
-            const res =await axios.post("http://localhost:3001/register",{ name, email, password})
+            const res =await axios.post("https://my-project-chi-eosin.vercel.app/register",{ name, email, password})
             setuser(res.data.user)
         }
         catch(error){
@@ -18,7 +18,7 @@ const Authprovider = ({children}) => {                   //main function
 
     const login = async (email, password) => {    
         try {
-            const res = await axios.post("http://localhost:3001/login", { email, password });
+            const res = await axios.post("https://my-project-chi-eosin.vercel.app/login", { email, password });
             setuser(res.data.user);
             return res.data.user;  // Return user data for redirection
         } catch (error) {
@@ -30,7 +30,7 @@ const Authprovider = ({children}) => {                   //main function
 
     // const addcourse=async(title,description,createdBy,duration,price)=>{
     //     try{
-    //         const res =await axios.post("http://localhost:3001/addcourse",{title,description,createdBy,duration,price})
+    //         const res =await axios.post("https://my-project-chi-eosin.vercel.app/addcourse",{title,description,createdBy,duration,price})
     //         setuser(res.data.user)
     //         console.log("Course Added:", res.data); 
     //     }
@@ -42,7 +42,7 @@ const Authprovider = ({children}) => {                   //main function
 
     const addcourse = async(title, description, createdBy, duration, price) => {
         try {
-            const res = await axios.post("http://localhost:3001/addcourse", {
+            const res = await axios.post("https://my-project-chi-eosin.vercel.app/addcourse", {
                 role: user.role,  // Include the user's role
                 title,
                 description,
@@ -62,7 +62,7 @@ const Authprovider = ({children}) => {                   //main function
     
     const getcourse = async () => {
         try {
-            const res = await axios.get("http://localhost:3001/getcourse");
+            const res = await axios.get("https://my-project-chi-eosin.vercel.app/getcourse");
             console.log("Fetched Courses:", res.data.courses); 
             return res.data.courses; 
         } catch (error) {
@@ -73,7 +73,7 @@ const Authprovider = ({children}) => {                   //main function
     
 //     const deletecourse=async(id)=>{
 //         try{
-//             const res = await axios.delete(`http://localhost:3001/deletecourse/${id}`);
+//             const res = await axios.delete(`https://my-project-chi-eosin.vercel.app/deletecourse/${id}`);
 // console.log("Course Deleted:", res.data);
 
 //             setuser(res.data.user)
@@ -87,7 +87,7 @@ const Authprovider = ({children}) => {                   //main function
 const deletecourse = async(id) => {
     try {
         // Include the user's role in the request
-        const res = await axios.delete(`http://localhost:3001/deletecourse/${id}`, {
+        const res = await axios.delete(`https://my-project-chi-eosin.vercel.app/deletecourse/${id}`, {
             data: { role: user.role }  // Send role in request body for DELETE request
         });
         console.log("Course Deleted:", res.data);
@@ -102,7 +102,7 @@ const deletecourse = async(id) => {
 
     // const updatecourse=async(id,title,description,createdBy,duration,price)=>{
     //     try{
-    //         const res = await axios.put(`http://localhost:3001/updatecourse/${id}`, {
+    //         const res = await axios.put(`https://my-project-chi-eosin.vercel.app/updatecourse/${id}`, {
     //             title, description, createdBy, duration, price
     //         });
     //         console.log("Course Updated:", res.data);
@@ -117,7 +117,7 @@ const deletecourse = async(id) => {
 
     const updatecourse = async(id, title, description, createdBy, duration, price) => {
         try {
-            const res = await axios.put(`http://localhost:3001/updatecourse/${id}`, {
+            const res = await axios.put(`https://my-project-chi-eosin.vercel.app/updatecourse/${id}`, {
                 role: user.role,
                 title, 
                 description, 
