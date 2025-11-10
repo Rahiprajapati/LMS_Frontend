@@ -89,9 +89,9 @@ const Footer = () => {
         <div className="container footer-inner">
           <p>© {new Date().getFullYear()} <strong>EduLMS</strong> — Practice project</p>
           <div className="footer-links">
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Contact</a>
+            <a href="/privacy">Privacy</a>
+            <a href="terms">Terms</a>
+            <a href="contact">Contact</a>
           </div>
         </div>
       </footer>
