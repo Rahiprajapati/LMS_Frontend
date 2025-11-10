@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react';
+import { Axios } from 'axios';
 import api from './api';
 const UserContext = createContext();
 const Authprovider = ({children}) => {                   //main function
@@ -7,7 +8,7 @@ const Authprovider = ({children}) => {                   //main function
 
     const register = async( name, email, password) => {                  //function
         try{
-            const res =await axios.post("https://my-project-chi-eosin.vercel.app/register",{ name, email, password})
+            const res =await axios.post("https://lms-backend-red-five.vercel.app/register",{ name, email, password})
             setuser(res.data.user)
         }
         catch(error){
@@ -20,7 +21,7 @@ const Authprovider = ({children}) => {                   //main function
 
     const login = async (email, password) => {    
         try {
-            const res = await axios.post("https://my-project-chi-eosin.vercel.app/login", { email, password });
+            const res = await axios.post("https://lms-backend-red-five.vercel.app/login", { email, password });
             setuser(res.data.user);
             setPurchasedCourses(res.data.user.purchasedCourses || []);
             return res.data.user;  // Return user data for redirection
@@ -45,7 +46,7 @@ const Authprovider = ({children}) => {                   //main function
 
     const addcourse = async(title, description, createdBy, duration, price) => {
         try {
-            const res = await axios.post("https://my-project-chi-eosin.vercel.app/addcourse", {
+            const res = await axios.post("https://lms-backend-red-five.vercel.app/addcourse", {
                 role: user.role,  // Include the user's role
                 title,
                 description,
@@ -77,7 +78,7 @@ const Authprovider = ({children}) => {                   //main function
     
     const getcourse = async () => {
         try {
-            const res = await axios.get("https://my-project-chi-eosin.vercel.app/getcourse");
+            const res = await axios.get("https://lms-backend-red-five.vercel.app/getcourse");
             console.log("Fetched Courses:", res.data.courses); 
             return res.data.courses; 
         } catch (error) {
@@ -102,7 +103,7 @@ const Authprovider = ({children}) => {                   //main function
 const deletecourse = async(id) => {
     try {
         // Include the user's role in the request
-        const res = await axios.delete(`https://my-project-chi-eosin.vercel.app/deletecourse/${id}`, {
+        const res = await axios.delete(`https://lms-backend-red-five.vercel.app/deletecourse/${id}`, {
             data: { role: user.role }  // Send role in request body for DELETE request
         });
         console.log("Course Deleted:", res.data);
@@ -132,7 +133,7 @@ const deletecourse = async(id) => {
 
     const updatecourse = async(id, title, description, createdBy, duration, price) => {
         try {
-            const res = await axios.put(`https://my-project-chi-eosin.vercel.app/updatecourse/${id}`, {
+            const res = await axios.put(`https://lms-backend-red-five.vercel.app/updatecourse/${id}`, {
                 role: user.role,
                 title, 
                 description, 
