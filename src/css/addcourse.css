@@ -1,189 +1,216 @@
-/* General Styling */
-.course-page {
+/* Course list and forms - align with global theme in App.css */
+.course-page { padding: 40px 0; }
+.page-title { font-size: 1.8rem; margin-bottom: 18px; text-align: center }
+
+/* Reuse .form-card and .form-input from App.css for consistent look. Fallbacks provided. */
+.form-container, .add-course-card { max-width:640px; margin:16px auto; }
+
+.add-course-card .form-input, .add-course-card textarea { width:100%; margin-bottom:12px }
+
+/* Course grid should match .course-list in App.css but with nicer gaps */
+.course-list { margin-top: 20px; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px }
+
+.course-item { background:var(--card); border-radius:12px; padding:16px; box-shadow:0 8px 24px rgba(12,18,31,0.06); border:1px solid rgba(12,18,31,0.04) }
+.course-item h3 { margin:0 0 8px }
+.course-item p { margin:6px 0; color:var(--muted) }
+
+.action-buttons { display:flex; gap:8px; margin-top:12px }
+.action-buttons .btn { flex:1 }
+.btn.small { padding:8px 10px; font-size:0.9rem }
+
+.lecture-inline-form { margin-top:10px; display:flex; flex-direction:column; gap:8px }
+.lecture-inline-form .form-input { width:100% }
+
+@media (max-width:720px){ .course-list{grid-template-columns:repeat(1,1fr)} }
+
+
+
+
+
+/* ///////////////////////////////////// */
+
+
+/* 🌐 Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f8fafc;
+  color: #222;
+}
+
+/* 🌟 Container */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 🧭 Navbar */
+.site-header {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-inner {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1E90FF, #FF69B4);
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+.brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1E88E5;
+  text-decoration: none;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.main-nav a:hover {
+  color: #1E88E5;
+}
+
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn.primary {
+  background-color: #1E88E5;
   color: white;
-  padding: 20px;
 }
 
-/* Page Title */
-.page-title {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+.btn.primary:hover {
+  background-color: #1669c1;
 }
 
-/* Form Container */
-.form-container {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  padding: 20px;
-  padding-right: 20px;
+.btn.logout {
+  background: #ff5252;
+  color: white;
+}
+
+.btn.logout:hover {
+  background: #e04646;
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid #1E88E5;
+  color: #1E88E5;
+}
+
+.btn.ghost:hover {
+  background-color: #1E88E5;
+  color: white;
+}
+
+.user-greet {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* 🧾 Form Cards */
+.form-card {
+  background: #ffffff;
+  padding: 32px;
   border-radius: 10px;
-  margin: 20px 0;
-  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
-  width: 400px; /* Keeping your existing width */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form-card h2 {
   text-align: center;
-  transition: 0.3s ease-in-out;
+  color: #1E88E5;
+  margin-bottom: 20px;
 }
 
-.form-container h2 {
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
   margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: all 0.3s;
 }
 
-/* Input Fields */
-.form-container form input,
-.form-container form textarea {
-  width: 95%;
-  padding: 10px;
-  margin: 8px 0;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  font-size: 16px;
+.form-input:focus {
+  border-color: #1E88E5;
+  box-shadow: 0 0 4px rgba(30, 136, 229, 0.3);
   outline: none;
 }
 
-.form-container form input::placeholder,
-.form-container form textarea::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.form-container form textarea {
-  resize: none;
-  height: 80px;
-}
-
-/* Add Course Button */
-.add-btn {
-  width: 100%;
-  padding: 12px;
-  background: grey;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.add-btn:hover {
-  background: darkgrey;
-}
-
-/* Course List Grid */
-.course-list {
-  margin-top: 30px;
-  width: 90%;
-  max-width: 1000px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 4 columns */
-  gap: 15px; /* Space between items */
-  justify-content: center;
-}
-
-/* Course Item */
-.course-item {
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
-  color: black;
-  transition: 0.3s;
+/* 🦶 Footer */
+.site-footer {
+  background-color: #ffffff;
+  padding: 20px 0;
+  border-top: 1px solid #eaeaea;
   text-align: center;
+  margin-top: 40px;
 }
 
-
-.course-item h3 {
-  margin-bottom: 5px;
-}
-
-.course-item p {
-  margin: 5px 0;
-}
-
-/* Buttons */
-.action-buttons {
+.footer-inner {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.update-btn,
-.delete-btn,
-.enroll-btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
+.footer-links a {
+  text-decoration: none;
+  color: #1E88E5;
+  margin: 0 8px;
+  transition: opacity 0.3s;
 }
 
-.update-btn {
-  background: orange;
-  color: white;
+.footer-links a:hover {
+  opacity: 0.7;
 }
 
-.delete-btn {
-  background: red;
-  color: white;
-}
-
-.enroll-btn {
-  background: rgb(0, 163, 49);
-  color: white;
-  width: 100%;
-}
-
-.update-btn:hover {
-  background: darkorange;
-}
-
-.delete-btn:hover {
-  background: darkred;
-}
-
-.enroll-btn:hover {
-  background: darkgreen;
-}
-
-/* Responsive Design */
+/* 📱 Responsive */
 @media (max-width: 768px) {
-  .form-container {
-    width: 90%;
+  .main-nav {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .course-list {
-    grid-template-columns: repeat(2, 1fr); /* 2 courses per row */
-  }
-}
-
-
-
-@media (max-width: 480px) {
-  .page-title {
-    font-size: 1.8rem;
+  .auth-links {
+    flex-wrap: wrap;
   }
 
-  .form-container {
-    padding: 15px;
-  }
-
-  .add-btn {
-    font-size: 14px;
-  }
-
-  .action-buttons {
+  .footer-inner {
     flex-direction: column;
     gap: 8px;
-  }
-  .course-list {
-    grid-template-columns: repeat(1, 1fr); /* 1 course per row */
   }
 }

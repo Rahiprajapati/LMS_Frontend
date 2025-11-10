@@ -1,16 +1,18 @@
-import axios from 'axios';
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from 'react';
+import api from './api';
 const UserContext = createContext();
 const Authprovider = ({children}) => {                   //main function
     const [user, setuser] = useState(null)                 //hook
+    const [purchasedCourses, setPurchasedCourses] = useState([])
 
-    const register=async( name, email, password)=>{                  //function
+    const register = async( name, email, password) => {                  //function
         try{
-            const res =await axios.post("https://my-project-chi-eosin.vercel.app/api/register",{ name, email, password})
+            const res =await axios.post("https://my-project-chi-eosin.vercel.app/register",{ name, email, password})
             setuser(res.data.user)
         }
         catch(error){
-            console.log(error)
+            console.log(error);
+            return null;
         }
     }
 
@@ -18,8 +20,9 @@ const Authprovider = ({children}) => {                   //main function
 
     const login = async (email, password) => {    
         try {
-            const res = await axios.post("https://my-project-chi-eosin.vercel.app/api/login", { email, password });
+            const res = await axios.post("https://my-project-chi-eosin.vercel.app/login", { email, password });
             setuser(res.data.user);
+            setPurchasedCourses(res.data.user.purchasedCourses || []);
             return res.data.user;  // Return user data for redirection
         } catch (error) {
             console.log(error);
@@ -42,7 +45,7 @@ const Authprovider = ({children}) => {                   //main function
 
     const addcourse = async(title, description, createdBy, duration, price) => {
         try {
-            const res = await axios.post("https://my-project-chi-eosin.vercel.app/api/addcourse", {
+            const res = await axios.post("https://my-project-chi-eosin.vercel.app/addcourse", {
                 role: user.role,  // Include the user's role
                 title,
                 description,
@@ -59,10 +62,22 @@ const Authprovider = ({children}) => {                   //main function
         }
     }
 
+    // Add lecture (persisted) - admin only
+    const addLecture = async (courseId, title, url) => {
+        try {
+            const res = await api.post(`/course/${courseId}/lecture`, { role: user?.role, title, url });
+            console.log('Lecture added', res.data);
+            return res.data;
+        } catch (err) {
+            console.log('Add lecture error', err);
+            return null;
+        }
+    }
+
     
     const getcourse = async () => {
         try {
-            const res = await axios.get("https://my-project-chi-eosin.vercel.app/api/getcourse");
+            const res = await axios.get("https://my-project-chi-eosin.vercel.app/getcourse");
             console.log("Fetched Courses:", res.data.courses); 
             return res.data.courses; 
         } catch (error) {
@@ -87,7 +102,7 @@ const Authprovider = ({children}) => {                   //main function
 const deletecourse = async(id) => {
     try {
         // Include the user's role in the request
-        const res = await axios.delete(`https://my-project-chi-eosin.vercel.app/api/deletecourse/${id}`, {
+        const res = await axios.delete(`https://my-project-chi-eosin.vercel.app/deletecourse/${id}`, {
             data: { role: user.role }  // Send role in request body for DELETE request
         });
         console.log("Course Deleted:", res.data);
@@ -117,7 +132,7 @@ const deletecourse = async(id) => {
 
     const updatecourse = async(id, title, description, createdBy, duration, price) => {
         try {
-            const res = await axios.put(`https://my-project-chi-eosin.vercel.app/updatecourse/api/${id}`, {
+            const res = await axios.put(`https://my-project-chi-eosin.vercel.app/updatecourse/${id}`, {
                 role: user.role,
                 title, 
                 description, 
@@ -125,7 +140,7 @@ const deletecourse = async(id) => {
                 duration, 
                 price
             });
-            
+
             console.log("Course Updated:", res.data);
             return res.data;
         }
@@ -134,11 +149,39 @@ const deletecourse = async(id) => {
             return null;
         }
     }
+
+    // Simple client-side logout. If you have a server logout endpoint, call it here.
+    const logout = () => {
+        setuser(null);
+        return true;
+    }
+
+    // Purchase a course (persist to backend)
+    const purchaseCourse = async (courseId) => {
+        try {
+            if (!user) return false;
+            const res = await api.post('/purchase', { userId: user._id, courseId });
+            if (res.data && res.data.user) {
+                // Update local user and purchasedCourses
+                setuser(res.data.user);
+                setPurchasedCourses(res.data.user.purchasedCourses || []);
+                return true;
+            }
+            return false;
+        } catch (err) {
+            console.log('Purchase error', err);
+            return false;
+        }
+    }
+
+    const isCoursePurchased = (courseId) => {
+        return purchasedCourses.includes(courseId);
+    }
     
     
     return (
         <div>
-            <UserContext.Provider value={{user,register,login,addcourse,getcourse,deletecourse,updatecourse}}>
+            <UserContext.Provider value={{user,register,login,logout,addcourse,getcourse,deletecourse,updatecourse,addLecture,purchaseCourse,isCoursePurchased,purchasedCourses}}>
             {children}
             </UserContext.Provider>
         </div>
